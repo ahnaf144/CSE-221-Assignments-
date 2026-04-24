@@ -1,1 +1,384 @@
+//Task01
+import java.util.Scanner;
+public class t1 {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int T=sc.nextInt();
+        for(int i=0;i<T;i++){
+            int N=sc.nextInt();
+            if(N%2==0){
+                System.out.println(N+" is an Even number.");
+            }
+            else{
+                System.out.println(N+" is an Odd number.");
+            }
+        }
+    }
+}
 
+
+//Task02
+import java.util.Scanner;
+public class t3 {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int T=sc.nextInt();
+        for(int i=0;i<T;i++){
+            sc.next();
+            double a=sc.nextDouble();
+            String m=sc.next();
+            double b=sc.nextDouble();
+            double result=0;
+            if(m.equals("+")){
+                result=a+b;
+            }
+            if(m.equals("-")){
+                result=a-b;
+            }
+            if(m.equals("*")){
+                result=a*b;
+            }
+            if(m.equals("/")){
+                result=a/b;
+            }
+            System.out.println(result);
+        }
+    }
+}
+
+
+
+
+//Task03
+import java.util.Scanner;
+public class t2 {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int T=sc.nextInt();
+        for(int i=0;i<T;i++){
+            long N=sc.nextInt();
+            long sum=((N*(N+1))/2);
+            System.out.println(sum);
+        }
+    }
+}
+
+
+
+
+//Task04
+import java.util.Scanner;
+public class t4 {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        for(int i=0;i<n;i++){
+            int[] arr=new int[sc.nextInt()];
+            for(int j=0;j<arr.length;j++){
+                arr[j]=sc.nextInt();
+            }
+            boolean sort=true;
+            for(int k=0;k<arr.length-1;k++){
+                if(arr[k+1]<arr[k]){
+                    sort=false;
+                    break;
+                }
+            }
+            if(sort){
+                System.out.println("YES");
+            }
+            else{
+                System.out.println("NO");
+            }
+        }
+    }
+}
+
+
+
+//Task05
+import java.util.Scanner;
+public class a5 {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int a=sc.nextInt();
+        int[] arr=new int[a];
+        int arr2[]=new int[1000000];
+        int c=0;
+        for(int i=0;i<a;i++){
+            arr[i]=sc.nextInt();
+        }
+        boolean sorted=true;
+        boolean again=true;
+        while(again){
+            again=false;
+            for(int i=0;i<a-2;i++){
+                if(arr[i+2]<arr[i]){
+                    int temp=arr[i];
+                    arr[i]=arr[i+2];
+                    arr[i+2]=temp;
+                    arr2[c++]=i+1;
+                    again=true;
+                }
+            }
+        }
+        for(int i=0;i<a-1;i++){
+            for(int j=i+1;j<a;j++){
+                if(arr[j]<arr[i]){
+                    sorted=false;
+                    break;
+                }
+            }
+        }
+        if(sorted){
+            System.out.println("YES");
+            System.out.println(c);
+            for(int i=0;i<c;i++){
+                System.out.println(arr2[i]+" "+(arr2[i]+2));
+            }
+        }
+        else{
+            System.out.println("NO");
+        }
+        sc.close();
+    }
+}
+
+
+
+//Task06
+import java.util.Scanner;
+public class t6 {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int[] arr=new int[sc.nextInt()];
+        for(int i=0;i<arr.length;i++){
+            arr[i]=sc.nextInt();
+        }
+        for(int j=0;j<arr.length;j++){
+            for(int i=0;i<arr.length-1;i++){
+                if((arr[i]%2==0&&arr[i+1]%2==0)||(arr[i]%2!=0&&arr[i+1]%2!=0)){
+                    if(arr[i]>arr[i+1]){
+                        int temp=arr[i];
+                        arr[i]=arr[i+1];
+                        arr[i+1]=temp;
+                    }
+                }
+            }
+        }
+        for(int i=0;i<arr.length;i++){
+            System.out.print(arr[i]+" ");
+        }
+    }
+}
+
+
+
+//Task07
+import java.util.Scanner;
+public class t7 {
+    public static boolean first(int a, int b, int c, int d){
+        if(b>d){
+            return true;
+        }
+        if(b<d){
+            return false;
+        }
+        return a<c;
+    }
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        for(int i=0;i<n;i++){
+            int[] id=new int[sc.nextInt()];
+            int[] marks=new int[id.length];
+            for(int j=0;j<id.length;j++){
+                id[j]=sc.nextInt();
+            }
+            for(int j=0;j<marks.length;j++){
+                marks[j]=sc.nextInt();
+            }
+            int[] id2=new int[id.length];
+            int[] marks2=new int[id.length];
+            int[] pos=new int[id.length];
+            for(int j=0;j<id.length;j++){
+                id2[j]=id[j];
+                marks2[j]=marks[j];
+                pos[j]=j;
+            }
+            for(int k=0;k<id.length-1;k++){
+                for(int j=k+1;j<id.length;j++){
+                    if(!first(id2[k], marks2[k], id2[j], marks2[j])){
+                        int temp=id2[k];
+                        id2[k]=id2[j];
+                        id2[j]=temp;
+                        temp=marks2[k];
+                        marks2[k]=marks2[j];
+                        marks2[j]=temp;
+                        temp=pos[k];
+                        pos[k]=pos[j];
+                        pos[j]=temp;
+                    }
+                }
+            }
+            int[] put=new int[id.length];
+            for(int k=0;k<id.length;k++){
+                put[pos[k]]=k;
+            }
+            boolean[] isDone=new boolean[id.length];
+            int c=0;
+            for(int k=0;k<id.length;k++){
+                if(isDone[k]||put[k]==k){
+                    continue;
+                }
+                int d=0;
+                int e=k;
+                while(!isDone[e]){
+                    isDone[e]=true;
+                    e=put[e];
+                    d++;
+                }
+                if(d>1){
+                    c+=d-1;
+                }
+            }
+            System.out.println("Minimum swaps: "+c);
+            for(int l=0;l<id.length;l++){
+                System.out.println("ID: "+id2[l]+" Mark: "+marks2[l]);
+            }
+        }
+    }
+}
+
+
+
+
+//Task08
+import java.util.Scanner;
+public class t8 {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        String[] name= new String[n];
+        String[] dest=new String[n];
+        String[] time= new String[n];
+        int[] idx=new int[n];
+        int count=0;
+        for(int i=0;i<n;i++){
+            name[i]=sc.next();
+            sc.next();
+            sc.next();
+            sc.next();
+            dest[i]=sc.next();
+            sc.next();
+            time[i]=sc.next();
+            idx[i]=count++;
+        }
+        for(int i=0;i<n-1;i++){
+            for(int j=i+1;j<n;j++){
+                int a=Math.min(name[i].length(), name[j].length());
+                boolean swap=false;
+                boolean same=true;
+                for(int k=0;k<a;k++){
+                    if(name[i].charAt(k)!=name[j].charAt(k)){
+                        same=false;
+                    }
+                    if(name[i].charAt(k)<='Z'&&name[j].charAt(k)<='Z'){
+                        if(name[j].charAt(k)<name[i].charAt(k)){
+                            swap=true;
+                        }
+                    }
+                    else if(name[i].charAt(k)<='Z'&&name[j].charAt(k)>='a'){
+                        swap=true;
+                    }
+                    else if(name[i].charAt(k)>='a'&&name[j].charAt(k)>='a'){
+                        if(name[j].charAt(k)<name[i].charAt(k)){
+                            swap=true;
+                        }
+                    }
+                    if(swap){
+                        String temp=name[i];
+                        name[i]=name[j];
+                        name[j]=temp;
+                        temp=dest[i];
+                        dest[i]=dest[j];
+                        dest[j]=temp;
+                        temp=time[i];
+                        time[i]=time[j];
+                        time[j]=temp;
+                        int temp2=idx[i];
+                        idx[i]=idx[j];
+                        idx[j]=temp2;
+                        break;
+                    }
+                    if(!swap&&name[i].charAt(k)!=name[j].charAt(k)){
+                        break;
+                    }
+                }
+                if(!swap){ 
+                    if(name[i].length()==name[j].length()){
+                        if(same){
+                            int hi=(time[i].charAt(0)-'0')*10+(time[i].charAt(1)-'0');
+                            int mi=(time[i].charAt(3)-'0')*10+(time[i].charAt(4)-'0');
+                            int hj=(time[j].charAt(0)-'0')*10+(time[j].charAt(1)-'0');
+                            int mj=(time[j].charAt(3)-'0')*10+(time[j].charAt(4)-'0');
+                            if(hj>hi || (hj==hi && mj>mi)){
+                                String temp=name[i];
+                                name[i]=name[j];
+                                name[j]=temp;
+                                temp=dest[i];
+                                dest[i]=dest[j];
+                                dest[j]=temp;
+                                temp=time[i];
+                                time[i]=time[j];
+                                time[j]=temp;
+                                int temp2=idx[i];
+                                idx[i]=idx[j];
+                                idx[j]=temp2;
+                            }
+                            else if(hj==hi&&mj==mi){
+                                if(idx[j]<idx[i]){
+                                    String temp=name[i];
+                                    name[i]=name[j];
+                                    name[j]=temp;
+                                    temp=dest[i];
+                                    dest[i]=dest[j];
+                                    dest[j]=temp;
+                                    temp=time[i];
+                                    time[i]=time[j];
+                                    time[j]=temp;
+                                    int temp2=idx[i];
+                                    idx[i]=idx[j];
+                                    idx[j]=temp2;
+                                }
+                            }
+                        }
+                    }
+                    else{
+                        if(same){
+                            if(name[j].length()<name[i].length()){
+                                String temp=name[i];
+                                name[i]=name[j];
+                                name[j]=temp;
+                                temp=dest[i];
+                                dest[i]=dest[j];
+                                dest[j]=temp;
+                                temp=time[i];
+                                time[i]=time[j];
+                                time[j]=temp;
+                                int temp2=idx[i];
+                                idx[i]=idx[j];
+                                idx[j]=temp2;
+                                swap=true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        for(int i=0;i<n;i++){
+            System.out.println(name[i]+" will depart for "+dest[i]+" at "+time[i]);
+        }
+        sc.close();
+    }
+}
