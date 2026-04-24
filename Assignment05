@@ -103,7 +103,7 @@ public class a2 {
         }
     }
 }
-//In this code if you submit it in java8 it will accept it which was in my case but if u are submitting it in java 21 you will get RT error so to avoid that import java.util.Collections at start and after creating the adj list and before calling dfs use a loop to sort the adj list. To simplify i have written the loop below.
+//In this code if you submit it in java8 it will be accepted which was in my case but if u are submitting it in java 21 you will get RT error so to avoid that import java.util.Collections at start and after creating the adj list and before calling dfs function use a loop to sort the adj list. To simplify i have written the loop below.
 //for(int i=1;i<=n;i++){
   //Collections.sort(a[i]);
 //}
