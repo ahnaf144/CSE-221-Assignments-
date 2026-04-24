@@ -1,1 +1,387 @@
+import java.io.*;
+import java.util.*;
+public class A_Advising {
+    public static int[] color;
+    static boolean cycle=false;
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int t=Integer.parseInt(st.nextToken());
+        while (t-->0) {
+            st=new StringTokenizer(br.readLine());
+            int n=Integer.parseInt(st.nextToken());
+            int m=Integer.parseInt(st.nextToken());
+            ArrayList<Integer>[] a=new ArrayList[n+1];
+            color=new int[n+1];
+            Stack<Integer> sta=new Stack<>();
+            cycle=false;
+            for(int i=1;i<=n;i++){
+                a[i]=new ArrayList<>();
+            }
+            for(int i=0;i<m;i++){
+                st=new StringTokenizer(br.readLine());
+                int u=Integer.parseInt(st.nextToken());
+                int v=Integer.parseInt(st.nextToken());
+                a[u].add(v);
+            }
+            for(int i=1;i<=n;i++){
+                if(color[i]==0){
+                    dfs(a,i,sta);
+                    if(cycle){
+                        break;
+                    }
+                }
+            }
+            if(cycle){
+                pw.println("-1");
+            }
+            else{
+                while(!sta.isEmpty()){
+                    pw.print(sta.pop()+" ");
+                }
+                pw.println();
+            }
+        }
+        
+        pw.flush();
+        pw.close();
+    }
+    public static void dfs(ArrayList<Integer>[] a,int s,Stack<Integer> sta){
+        color[s]=1;
+        for(int i=0;i<a[s].size();i++){
+            int x=a[s].get(i);
+            if(color[x]==1){
+                cycle=true;
+                return;
+            }
+            if(color[x]==0){
+                dfs(a, x,sta);
+                if(cycle){
+                    return;
+                }
+            }
+        }
+        sta.push(s);
+        color[s]=2;
+    }
+}
+
+
+
+
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+public class B_A_Football_Match {
+    static int[] visited;
+    static int[] type;
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        int m=Integer.parseInt(st.nextToken());
+        ArrayList<Integer>[] a=new ArrayList[n+1];
+        for(int i=1;i<=n;i++){
+            a[i]=new ArrayList<>();
+        }
+        for(int i=0;i<m;i++){
+            st=new StringTokenizer(br.readLine());
+            int u=Integer.parseInt(st.nextToken());
+            int v=Integer.parseInt(st.nextToken());
+            a[u].add(v);
+            a[v].add(u);
+        }
+        visited=new int[n+1];
+        type=new int[n+1];
+        int count=0;
+        for(int i=1;i<=n;i++){
+            if(visited[i]==0){
+                count+=bfs(a,i);
+            }
+        }
+        pw.println(count);
+        pw.flush();
+        pw.close();
+    }
+    public static int bfs(ArrayList<Integer>[] a,int s){
+        visited[s]=1;
+        type[s]=0;
+        Queue<Integer> q=new LinkedList<>();
+        q.add(s);
+        int r=1;
+        int h=0;
+        while(!q.isEmpty()){
+            int u=q.remove();
+            for(int i=0;i<a[u].size();i++){
+                int x=a[u].get(i);
+                if(visited[x]==0){
+                    visited[x]=1;
+                    if(type[u]==0){
+                        type[x]=1;
+                        h++;
+                    }
+                    else{
+                        type[x]=0;
+                        r++;
+                    }
+                    q.add(x);
+                }
+            }
+        }
+        if(r>h){
+            return r;
+        }
+        else{
+            return h;
+        }
+    }
+}
+
+
+
+
+
+
+import java.io.*;
+import java.util.*;
+public class a3 {
+    static int[][] visited;
+    static int[][] dis;
+    static int[] x={2,2,-2,-2,1,1,-1,-1};
+    static int[] y={1,-1,1,-1,2,-2,2,-2};
+    static int k=0;
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        visited=new int[n+1][n+1];
+        dis=new int[n+1][n+1];
+        st=new StringTokenizer(br.readLine());
+        int x1=Integer.parseInt(st.nextToken());
+        int y1=Integer.parseInt(st.nextToken());
+        int x2=Integer.parseInt(st.nextToken());
+        int y2=Integer.parseInt(st.nextToken());
+        k=n;
+        pw.println(bfs(x1,y1,x2,y2));
+        pw.flush();
+        pw.close();
+    }
+    public static int bfs(int x1,int y1,int x2,int y2){
+        visited[x1][y1]=1;
+        Queue<Integer> qx=new LinkedList<>();
+        Queue<Integer> qy=new LinkedList<>();
+        qx.add(x1);
+        qy.add(y1);
+        while(!qx.isEmpty()){
+            int a=qx.remove();
+            int b=qy.remove();
+            if(a==x2&&b==y2){
+                return dis[a][b];
+            }
+            for(int i=0;i<8;i++){
+                int X=a+x[i];
+                int Y=b+y[i];
+                if(X>=1&&X<=k&&Y>=1&&Y<=k&&visited[X][Y]==0){
+                    visited[X][Y]=1;
+                    dis[X][Y]=1+dis[a][b];
+                    qx.add(X);
+                    qy.add(Y);
+                }
+            }
+        }
+        return -1;
+    }
+}
+
+
+
+
+
+import java.io.*;
+import java.util.*;
+public class a4{
+    static int[] visited;
+    static int[] dis;
+    static int mostD;
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        ArrayList<Integer>[] a=new ArrayList[n+1];
+        for(int i=1;i<=n;i++){
+            a[i]=new ArrayList<>();
+        }
+        visited=new int[n+1];
+        dis=new int[n+1];
+        for(int i=0;i<n-1;i++){
+            st=new StringTokenizer(br.readLine());
+            int u=Integer.parseInt(st.nextToken());
+            int v=Integer.parseInt(st.nextToken());
+            a[u].add(v);
+            a[v].add(u);
+        }
+        int j=bfs(a,1);
+        visited=new int[n+1];
+        dis=new int[n+1];
+        int k=bfs(a,j);
+        pw.println(dis[mostD]);
+        pw.println(j+" "+k);
+        pw.close();
+    }
+    public static int bfs(ArrayList<Integer>[] a,int s){
+        visited[s]=1;
+        Queue<Integer> q=new LinkedList<>();
+        q.add(s);
+        mostD=s;
+        while(!q.isEmpty()){
+            int u=q.remove();
+            for(int i=0;i<a[u].size();i++){
+                int x=a[u].get(i);
+                if(visited[x]==0){
+                    visited[x]=1;
+                    dis[x]=dis[u]+1;
+                    q.add(x);
+                }
+                if(dis[x]>dis[mostD]){
+                    mostD=x;
+                }
+            }
+        }
+        return mostD;
+    }
+}
+
+
+
+
+
+import java.io.*;
+import java.util.*;
+public class a5 {
+    static int[] visited;
+    static int[] dis;
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        int m=Integer.parseInt(st.nextToken());
+        int s=Integer.parseInt(st.nextToken());
+        int q=Integer.parseInt(st.nextToken());
+        ArrayList<Integer>[] a=new ArrayList[n+1];
+        for(int i=1;i<=n;i++){
+            a[i]=new ArrayList<>();
+        }
+        visited=new int[n+1];
+        dis=new int[n+1];
+        for(int i=0;i<m;i++){
+            st=new StringTokenizer(br.readLine());
+            int u=Integer.parseInt(st.nextToken());
+            int v=Integer.parseInt(st.nextToken());
+            a[u].add(v);
+            a[v].add(u);
+        }
+        st=new StringTokenizer(br.readLine());
+        int[] sources=new int[s+1];
+        int[] d=new int[q+1];
+        Arrays.fill(dis, -1);
+        Queue<Integer> Q=new LinkedList<>();
+        for(int i=1;i<=s;i++){
+            sources[i]=Integer.parseInt(st.nextToken());
+            Q.add(sources[i]);
+            visited[sources[i]]=1;
+            dis[sources[i]]=0;
+        }
+        st=new StringTokenizer(br.readLine());
+        for(int i=1;i<=q;i++){
+            d[i]=Integer.parseInt(st.nextToken());
+        }
+        while(!Q.isEmpty()){
+            int u=Q.remove();
+            for(int i=0;i<a[u].size();i++){
+                int x=a[u].get(i);
+                if(visited[x]==0){
+                    visited[x]=1;
+                    dis[x]=dis[u]+1;
+                    Q.add(x);
+                }
+            }
+        }
+        for(int i=1;i<d.length;i++){
+            pw.print(dis[d[i]]+" ");
+        }
+        pw.flush();
+        pw.close();
+    }
+}
+
+
+
+
+
+
+import java.io.*;
+import java.util.*;
+public class a6 {
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int s=Integer.parseInt(st.nextToken());
+        int c=Integer.parseInt(st.nextToken());
+        st=new StringTokenizer(br.readLine());
+        int n=Integer.parseInt(st.nextToken());
+        int[] visited=new int[10000];
+        int[] dis=new int[10000];
+        int[] forbidden=new int[10000];
+        for(int i=0;i<n;i++){
+            st=new StringTokenizer(br.readLine());
+            int x=Integer.parseInt(st.nextToken());
+            forbidden[x]=1;
+        }
+        Queue<Integer> q=new LinkedList<>();
+        q.add(s);
+        visited[s]=1;
+        while(!q.isEmpty()){
+            int u=q.remove();
+            if(u==c){
+                pw.println(dis[u]);
+                pw.flush();
+                pw.close();
+                return;
+            }
+            for(int i=0;i<4;i++){
+                int power=(int)Math.pow(10, i);
+                int digit=(u/power)%10;
+                int pos=(digit+1)%10;
+                int a=u+(pos-digit)*power;
+                if(visited[a]==0&&forbidden[a]==0){
+                    visited[a]=1;
+                    dis[a]=dis[u]+1;
+                    q.add(a);
+                }
+                int neg=(digit+9)%10;
+                int b=u+(neg-digit)*power;
+                if(visited[b]==0&&forbidden[b]==0){
+                    visited[b]=1;
+                    dis[b]=dis[u]+1;
+                    q.add(b);
+                }
+            }
+        }
+        pw.println("-1");
+        pw.flush();
+        pw.close();
+    }
+}
 
