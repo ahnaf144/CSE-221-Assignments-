@@ -1,6 +1,6 @@
 import java.io.*;
 import java.util.*;
-public class A_Advising {
+public class a {
     public static int[] color;
     static boolean cycle=false;
     public static void main(String[] args) throws Exception{
@@ -79,7 +79,7 @@ import java.util.StringTokenizer;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
-public class B_A_Football_Match {
+public class b {
     static int[] visited;
     static int[] type;
     public static void main(String[] args) throws Exception{
@@ -152,7 +152,7 @@ public class B_A_Football_Match {
 
 import java.io.*;
 import java.util.*;
-public class a3 {
+public class c {
     static int[][] visited;
     static int[][] dis;
     static int[] x={2,2,-2,-2,1,1,-1,-1};
@@ -208,7 +208,7 @@ public class a3 {
 
 import java.io.*;
 import java.util.*;
-public class a4{
+public class d{
     static int[] visited;
     static int[] dis;
     static int mostD;
@@ -267,7 +267,7 @@ public class a4{
 
 import java.io.*;
 import java.util.*;
-public class a5 {
+public class e {
     static int[] visited;
     static int[] dis;
     public static void main(String[] args) throws Exception{
@@ -332,7 +332,7 @@ public class a5 {
 
 import java.io.*;
 import java.util.*;
-public class a6 {
+public class f {
     public static void main(String[] args) throws Exception{
         BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st=new StringTokenizer(br.readLine());
