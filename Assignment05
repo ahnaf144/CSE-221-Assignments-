@@ -1,1 +1,613 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+public class a1 {
+    public static int[] color;
+    static PrintWriter pw=new PrintWriter(System.out);
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        int n=Integer.parseInt(st.nextToken());
+        int m=Integer.parseInt(st.nextToken());
+        color=new int[n+1];
+        ArrayList<Integer>[] a=new ArrayList[n+1];
+        for(int i=1;i<=n;i++){
+            a[i]=new ArrayList<>();
+        }
+        int s=0;
+        for(int i=0;i<m;i++){
+            st=new StringTokenizer(br.readLine());
+            int u=Integer.parseInt(st.nextToken());
+            int v=Integer.parseInt(st.nextToken());
+            a[u].add(v);
+            a[v].add(u);
+        }
+        bfs(a,1);
+        pw.flush();
+        pw.close();
+    }
+    public static void bfs(ArrayList<Integer>[] a,int s){
+        Queue<Integer> q=new LinkedList<>();
+        color[s]=1;
+        q.add(s);
+        while(!q.isEmpty()){
+            int u=q.remove();
+            pw.print(u+" ");
+            for(int i=0;i<a[u].size();i++){
+                int x=(a[u].get(i));
+                if(color[x]==0){
+                    color[x]=1;
+                    q.add(x);
+                }
+            }
+        }
+        pw.println();
+    }
+}
 
+
+
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+public class a2 {
+    static PrintWriter pw=new PrintWriter(System.out);
+    static int[] color;
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        int n=Integer.parseInt(st.nextToken());
+        int m=Integer.parseInt(st.nextToken());
+        color=new int[n+1];
+        ArrayList<Integer>[] a=new ArrayList[n+1];
+        for(int i=1;i<=n;i++){
+            a[i]=new ArrayList<>();
+        }
+        int[] u=new int[m+1];
+        int[] v=new int[m+1];
+        st=new StringTokenizer(br.readLine());
+        for(int i=1;i<=m;i++){
+            u[i]=Integer.parseInt(st.nextToken());
+        }
+        st=new StringTokenizer(br.readLine());
+        for(int i=1;i<=m;i++){
+            v[i]=Integer.parseInt(st.nextToken());
+        }
+        for(int i=1;i<=m;i++){
+            a[u[i]].add(v[i]);
+            a[v[i]].add(u[i]);
+        }
+        dfs(a,1);
+        pw.flush();
+        pw.close();
+    }
+    public static void dfs(ArrayList<Integer>[] a,int s){
+        color[s]=1;
+        pw.print(s+" ");
+        for(int i=0;i<a[s].size();i++){
+            int x=a[s].get(i);
+            if(color[x]==0){
+                dfs(a,x);
+            }
+        }
+    }
+}
+//In this code if you submit it in java8 it will accept it which was in my case but if u are submitting it in java 21 you will get RT error so to avoid that import java.util.Collections at start and after creating the adj list and before calling dfs use a loop to sort the adj list. To simplify i have written the loop below.
+//for(int i=1;i<=n;i++){
+  //Collections.sort(a[i]);
+//}
+
+
+
+
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Queue;
+public class a3 {
+    static PrintWriter pw=new PrintWriter(System.out);
+    static int[] color;
+    static int[] distance;
+    static int[] parent;
+    static int s1=0;
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        int n=Integer.parseInt(st.nextToken());
+        int m=Integer.parseInt(st.nextToken());
+        int s=Integer.parseInt(st.nextToken());
+        s1=s;
+        int d=Integer.parseInt(st.nextToken());
+        ArrayList<Integer>[] a=new ArrayList[n+1];
+        for(int i=1;i<=n;i++){
+            a[i]=new ArrayList<>();
+        }
+        color=new int[n+1];
+        distance=new int[n+1];
+        parent=new int[n+1];
+        int[] u=new int[m+1];
+        int[] v=new int[m+1];
+        st=new StringTokenizer(br.readLine());
+        for(int i=1;i<=m;i++){
+            u[i]=Integer.parseInt(st.nextToken());
+        }
+        st=new StringTokenizer(br.readLine());
+        for(int i=1;i<=m;i++){
+            v[i]=Integer.parseInt(st.nextToken());
+        }
+        for(int i=1;i<=m;i++){
+            a[u[i]].add(v[i]);
+            a[v[i]].add(u[i]);
+        }
+        for(int i=1;i<=n;i++){
+            Collections.sort(a[i]);
+        }
+        bfs(a,s,d);
+        pw.flush();
+        pw.close();
+    }
+    public static void bfs(ArrayList<Integer>[] a,int s2,int d){
+        Queue<Integer> q=new LinkedList<>();
+        color[s2]=1;
+        q.add(s2);
+        while (!q.isEmpty()) {
+            int u=q.remove();
+            for(int i=0;i<a[u].size();i++){
+                int x=a[u].get(i);
+                if(color[x]==0){
+                    color[x]=1;
+                    if(x!=s1&&parent[x]==0){
+                        parent[x]=u;
+                        distance[x]=distance[parent[x]]+1;
+                    }
+                    q.add(x);
+                }
+            }
+        }
+        int dis=distance[d];
+        if(s1==d){
+            pw.println("0");
+            pw.println(s1);
+            pw.flush();
+            pw.close();
+            return;
+        }
+        if(dis==0){
+            pw.println("-1");
+            pw.flush();
+            pw.close();
+            return;
+        }
+        pw.println(dis);
+        int[] res=new int[dis+1];
+        int d2=d;
+        for(int i=1;i<=dis;i++){
+            res[i]=parent[d];
+            d=parent[d];
+        }
+        for(int i=dis;i>=1;i--){
+            pw.print(res[i]+" ");
+        }
+        pw.print(d2);
+    }
+}
+
+
+
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Queue;
+public class a4 {
+    static PrintWriter pw=new PrintWriter(System.out);
+    static int dis1=0;
+    static int s1=0;
+    static int k1=0;
+    static boolean t1=false;
+    static boolean t2=false;
+    static ArrayList<Integer> b1=new ArrayList<>();
+    static ArrayList<Integer> b2=new ArrayList<>();
+    static ArrayList<Integer> b3=new ArrayList<>();
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        int n=Integer.parseInt(st.nextToken());
+        int m=Integer.parseInt(st.nextToken());
+        int s=Integer.parseInt(st.nextToken());
+        s1=s;
+        int d=Integer.parseInt(st.nextToken());
+        int k=Integer.parseInt(st.nextToken());   
+        k1=k;
+        ArrayList<Integer>[] a=new ArrayList[n+1];
+        for(int i=1;i<=n;i++){
+            a[i]=new ArrayList<>();
+        }
+        for(int i=1;i<=m;i++){
+            st=new StringTokenizer(br.readLine());
+            int u=Integer.parseInt(st.nextToken());
+            int v=Integer.parseInt(st.nextToken());
+            a[u].add(v);
+        }
+        bfs1(a,s,k,n);
+        if(t1){
+            bfs2(a,k,d,n);
+        }
+        else{
+            pw.println("-1");
+            pw.flush();
+            pw.close();
+            return;
+        }
+        if(t2){
+            for(int i=0;i<b1.size();i++){
+                b3.add(b1.get(i));
+            }
+            for(int i=0;i<b2.size();i++){
+                b3.add(b2.get(i));
+            }
+            pw.println(dis1);
+            for(int i=0;i<b3.size();i++){
+                pw.print(b3.get(i)+" ");
+            }
+        }
+        else{
+            pw.println("-1");
+        }
+        pw.flush();
+        pw.close();
+    }
+
+    public static void bfs1(ArrayList<Integer>[] a,int s2,int d,int n){
+        int[] color=new int[n+1];
+        int[] distance=new int[n+1];
+        int[] parent=new int[n+1];    
+        Queue<Integer> q=new LinkedList<>();
+        color[s2]=1;
+        q.add(s2);
+        while (!q.isEmpty()) {
+            int u=q.remove();
+            for(int i=0;i<a[u].size();i++){
+                int x=a[u].get(i);
+                if(color[x]==0){
+                    color[x]=1;
+                    if(x!=s1&&parent[x]==0){
+                        parent[x]=u;
+                        distance[x]=distance[parent[x]]+1;
+                    }
+                    q.add(x);
+                }
+            }
+        }
+        int dis=distance[d]; 
+        dis1+=dis;
+        if(s2==d){
+            t1=true;
+            return;
+        }
+        if(dis!=0){
+            t1=true;
+            for(int i=1;i<=dis;i++){
+                b1.add(parent[d]);
+                d=parent[d];
+            }
+            Collections.reverse(b1);
+        }
+    }
+    public static void bfs2(ArrayList<Integer>[] a,int s2,int d,int n){
+        int[] color=new int[n+1];
+        int[] distance=new int[n+1];
+        int[] parent=new int[n+1];
+        Queue<Integer> q=new LinkedList<>();
+        color[s2]=1;
+        q.add(s2);
+        while (!q.isEmpty()) {
+            int u=q.remove();
+            for(int i=0;i<a[u].size();i++){
+                int x=a[u].get(i);
+                if(color[x]==0){
+                    color[x]=1;
+                    if(x!=s1&&parent[x]==0){
+                        parent[x]=u;
+                        distance[x]=distance[parent[x]]+1;
+                    }
+                    q.add(x);
+                }
+            }
+        }
+        int dis=distance[d];
+        dis1+=dis;
+        if(s2==d){
+            t2=true;
+            b2.add(d);
+        }
+        if(dis!=0){
+            t2=true;
+            int d2=d;
+            for(int i=1;i<=dis;i++){
+                b2.add(parent[d]);
+                d=parent[d];
+            }
+            Collections.reverse(b2);
+            b2.add(d2);
+        }
+    }
+}
+
+
+
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Queue;
+public class a5 {
+    public static int s1=0;
+    static int[] R;
+    static PrintWriter pw=new PrintWriter(System.out);
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        int n=Integer.parseInt(st.nextToken());
+        int m=Integer.parseInt(st.nextToken());
+        int q=Integer.parseInt(st.nextToken());
+        ArrayList<Integer>[] a=new ArrayList[n+1];
+        for(int i=1;i<=n;i++){
+            a[i]=new ArrayList<>();
+        }
+        for(int i=0;i<m;i++){
+            st=new StringTokenizer(br.readLine());
+            int u=Integer.parseInt(st.nextToken());
+            int v=Integer.parseInt(st.nextToken());
+            a[u].add(v);
+            a[v].add(u);
+        }
+        R=new int[n+1];
+        int count=0;
+        for(int i=1;i<=n;i++){
+            if(R[i]==0){
+                count++;
+                bfs(a,i,count);
+            }
+        }
+        for(int i=0;i<q;i++){
+            st=new StringTokenizer(br.readLine());
+            int s=Integer.parseInt(st.nextToken());
+            s1=s;
+            int d=Integer.parseInt(st.nextToken());
+            if(R[s]==R[d]){
+                pw.println("YES");
+            }
+            else{
+                pw.println("NO");
+            }
+        }
+        pw.flush();
+        pw.close();
+    }
+    public static void bfs(ArrayList<Integer>[] a,int s,int count){
+        Queue<Integer> q=new LinkedList<>();
+        q.add(s);
+        R[s]=count;
+        while(!q.isEmpty()){
+            int u=q.remove();
+            for(int i=0;i<a[u].size();i++){
+                int x=a[u].get(i);
+                if(R[x]==0){
+                    R[x]=count;
+                    q.add(x);
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+import java.util.ArrayList;
+public class a6 {
+    public static int[] size;
+    public static  PrintWriter pw=new PrintWriter(System.out);
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        int n=Integer.parseInt(st.nextToken());
+        int r=Integer.parseInt(st.nextToken());
+        ArrayList<Integer>[] a=new ArrayList[n+1];
+        for(int i=1;i<=n;i++){
+            a[i]=new ArrayList<>();
+        } 
+        size=new int[n+1];
+        for(int i=0;i<n-1;i++){
+            st=new StringTokenizer(br.readLine());
+            int u=Integer.parseInt(st.nextToken());
+            int v=Integer.parseInt(st.nextToken());
+            a[u].add(v);
+            a[v].add(u);
+        }
+        dfs(a, r,0);
+        st=new StringTokenizer(br.readLine());
+        int q=Integer.parseInt(st.nextToken());
+        while(q-->0){
+            st=new StringTokenizer(br.readLine());
+            int x=Integer.parseInt(st.nextToken());
+            pw.println(size[x]);
+        }
+        pw.flush();
+        pw.close();
+    }
+    public static void dfs(ArrayList<Integer>[] a,int x,int parent){
+        size[x]=1;
+        for(int i=0;i<a[x].size();i++){
+            int k=a[x].get(i);
+            if(k!=parent){
+                dfs(a,k,x);
+                size[x]+=size[k];
+            }
+        }
+    }
+}
+
+
+
+
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+public class a7 {
+    public static int[] indegree;
+    public static boolean detect=false;
+    static PrintWriter pw=new PrintWriter(System.out);
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        int n=Integer.parseInt(st.nextToken());
+        int m=Integer.parseInt(st.nextToken());
+        ArrayList<Integer>[] a=new ArrayList[n+1];
+        for(int i=1;i<=n;i++){
+            a[i]=new ArrayList<>();
+        }
+        indegree=new int[n+1];
+        for(int i=0;i<m;i++){
+            st=new StringTokenizer(br.readLine());
+            int u=Integer.parseInt(st.nextToken());
+            int v=Integer.parseInt(st.nextToken());
+            a[u].add(v);
+            indegree[v]++;
+        }
+        Queue<Integer> q=new LinkedList<>();
+        for(int i=1;i<=n;i++){
+            if(indegree[i]==0){
+                q.add(i);
+            }
+        }
+        int count=0;
+        while(!q.isEmpty()){
+            int u=q.remove();
+            count++;
+            for(int i=0;i<a[u].size();i++){
+                int x=a[u].get(i);
+                indegree[x]--;
+                if(indegree[x]==0){
+                    q.add(x);
+                }
+            }
+        }
+        if(count!=n){
+            pw.println("YES");
+        }
+        else{
+            pw.println("NO");
+        }
+        pw.flush();
+        pw.close();
+    }
+}
+
+
+
+
+
+
+import java.io.*;
+import java.util.*;
+public class h {
+    static int r;
+    static int h;
+    static String[] map;
+    static int[][] visited;
+    static PrintWriter pw=new PrintWriter(System.out);
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader((System.in)));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        r=Integer.parseInt(st.nextToken());
+        h=Integer.parseInt(st.nextToken());
+        map=new String[r];
+        visited=new int[r][h];
+        for(int i=0;i<r;i++){
+            map[i]=br.readLine();
+        }
+        int max=0;
+        for(int i=0;i<r;i++){
+            for(int j=0;j<h;j++){
+                if(map[i].charAt(j)!='#'&&visited[i][j]==0){
+                    int dcount=dfs(i,j);
+                    max=Math.max(max, dcount);
+                }
+            }
+        }
+        pw.println(max);
+        pw.flush();
+        pw.close();
+    }
+    public static int dfs(int x,int y){
+        Stack<int[]> st=new Stack<>();
+        st.push(new int[]{x,y});
+        visited[x][y]=1;
+        int dcount=0;
+        while(!st.isEmpty()){
+            int[] curr=st.pop();
+            int a=curr[0];
+            int b=curr[1];
+            if(map[a].charAt(b)=='D'){
+            dcount++;
+            }
+            if(a>0&&visited[a-1][b]==0&&map[a-1].charAt(b)!='#'){
+                visited[a-1][b]=1;
+                st.push(new int[]{a-1,b});
+            }
+            if(b>0&&visited[a][b-1]==0&&map[a].charAt(b-1)!='#'){
+                visited[a][b-1]=1;
+                st.push(new int[]{a,b-1});
+            }
+            if(a<r-1&&visited[a+1][b]==0&&map[a+1].charAt(b)!='#'){
+                visited[a+1][b]=1;
+                st.push(new int[]{a+1,b});
+            }
+            if(b<h-1&&visited[a][b+1]==0&&map[a].charAt(b+1)!='#'){
+                visited[a][b+1]=1;
+                st.push(new int[]{a,b+1});
+            }
+        }
+        return dcount;
+    }
+}
