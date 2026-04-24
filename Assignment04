@@ -1,1 +1,444 @@
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+public class a1 {
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int v=Integer.parseInt(st.nextToken());
+        int e=Integer.parseInt(st.nextToken());
+        int[][] a=new int[v][v];
+        for(int i=0;i<e;i++){
+            st=new StringTokenizer(br.readLine());
+            int m=Integer.parseInt(st.nextToken());
+            int n=Integer.parseInt(st.nextToken());
+            int w=Integer.parseInt(st.nextToken());
+            a[m-1][n-1]=w;
+        }
+        for(int i=0;i<v;i++){
+            for(int j=0;j<v;j++){
+                pw.print(a[i][j]+" ");
+            }
+            pw.println();
+        }
+        pw.flush();
+        pw.close();
+    }
+}
+
+
+
+
+
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+public class a2 {
+    public static int[] head;
+    public static int[] tail;
+    public static int[] next;
+    public static int[] weight;
+    public static int idx=0;
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        int e=Integer.parseInt(st.nextToken());
+        int[] u=new int[e];
+        int[] v=new int[e];
+        int[] w=new int[e];
+        st=new StringTokenizer(br.readLine());
+        for(int i=0;i<e;i++){
+            u[i]=Integer.parseInt(st.nextToken());
+        }
+        st=new StringTokenizer(br.readLine());
+        for(int i=0;i<e;i++){
+            v[i]=Integer.parseInt(st.nextToken());
+        }
+        st=new StringTokenizer(br.readLine());
+        for(int i=0;i<e;i++){
+            w[i]=Integer.parseInt(st.nextToken());
+        }
+        head=new int[n+1];
+        tail=new int[e];
+        next=new int[e];
+        weight=new int[e];
+        for(int i=1;i<=n;i++){
+            head[i]=-1;
+        }
+        for(int i=0;i<e;i++){
+            addEdge(u[i], v[i], w[i]);
+        }
+        for(int i=1;i<=n;i++){
+            pw.print(i+":");
+            boolean notExists=true;
+            for(int j=head[i];j!=-1;j=next[j]){
+                if(notExists){
+                    pw.print(" ");
+                    notExists=false;
+                }
+                else{
+                    pw.print(" ");
+                }
+                pw.print("("+tail[j]+","+weight[j]+")");
+            }
+            pw.println();
+        }
+        pw.flush();
+        pw.close();
+    }
+    public static void addEdge(int u,int v,int w){
+        tail[idx]=v;
+        next[idx]=head[u];
+        head[u]=idx;
+        weight[idx]=w;
+        idx++;
+    }
+}
+
+
+
+
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+public class a3 {
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int v=Integer.parseInt(st.nextToken());
+        int[][] a=new int[v][v];
+        for(int i=0;i<v;i++){
+            st=new StringTokenizer(br.readLine());
+            int l=Integer.parseInt(st.nextToken());
+            for(int k=0;k<l;k++){
+                a[i][Integer.parseInt(st.nextToken())]=1;
+            }
+        }
+        for(int i=0;i<v;i++){
+            for(int j=0;j<v;j++){
+                pw.print(a[i][j]+" ");
+            }
+            pw.println();
+        }
+        pw.flush();
+        pw.close();
+    }
+}
+
+
+
+
+
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+import java.util.ArrayList;
+public class a4 {
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        int m=Integer.parseInt(st.nextToken());
+        ArrayList<Integer>[] graph=new ArrayList[n+1];
+        for(int i=0;i<=n;i++){
+            graph[i]=new ArrayList<>();
+        }
+        st=new StringTokenizer(br.readLine());
+        int[] u=new int[m];
+        int[] v=new int[m];
+        for(int i=0;i<m;i++){
+            u[i]=Integer.parseInt(st.nextToken());
+        }
+        st=new StringTokenizer(br.readLine());
+        for(int i=0;i<m;i++){
+            v[i]=Integer.parseInt(st.nextToken());
+        }
+        for(int i=0;i<m;i++){
+            graph[u[i]].add(v[i]);
+            graph[v[i]].add(u[i]);
+        }
+        int[] degree=new int[n+1];
+        for(int i=0;i<=n;i++){
+            degree[i]=graph[i].size();
+        }
+        int count=0;
+        for(int i=0;i<degree.length;i++){
+            if(degree[i]%2!=0){
+                count++;
+            }
+        }
+        if(count==0||count==2){
+            pw.println("YES");
+        }
+        else{
+            pw.println("NO");
+        }
+        pw.flush();
+        pw.close();
+    }
+}
+
+
+
+
+
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+public class a5 {
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);   
+        int n=Integer.parseInt(st.nextToken());
+        int m=Integer.parseInt(st.nextToken());
+        st=new StringTokenizer(br.readLine());
+        int[] u=new int[m+1];
+        int[] v=new int[m+1];
+        for(int i=1;i<=m;i++){
+            u[i]=Integer.parseInt(st.nextToken());
+        }
+        st=new StringTokenizer(br.readLine());
+        for(int i=1;i<=m;i++){
+            v[i]=Integer.parseInt(st.nextToken());
+        }
+        int[] outCOunt=new int[n+1];
+        int[] inCount=new int[n+1];
+        for(int i=1;i<=m;i++){
+            outCOunt[u[i]]++;
+            inCount[v[i]]++;
+        }
+        for(int i=1;i<=n;i++){
+            pw.print(inCount[i]-outCOunt[i]+" ");
+        }
+        pw.flush();
+        pw.close();
+    }
+}
+
+
+
+
+
+
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+public class a6 {
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        st=new StringTokenizer(br.readLine());
+        int r=Integer.parseInt(st.nextToken());
+        int c=Integer.parseInt(st.nextToken());
+        int possible=0;
+        if(n==1){
+            pw.print("0");
+            pw.flush();
+            pw.close();
+            return;
+        }
+        if(((r==1)&&(c==1))||((r==1)&&c==n)||((r==n)&&(c==1))||((r==n)&&(c==n))){
+            possible=3;
+        }
+        else if((r==1&&(c>1&&c<n))||(r==n&&(c>1&&c<n))||(c==1&&(r>1&&r<n))||(c==n&&(r>1&&r<n))){
+            possible=5;
+        }
+        else{
+            possible=8;
+        }
+        pw.println(possible);
+        
+        if(possible==3){
+            if(r==1&&c==1){
+                pw.println((r)+" "+(c+1));
+                pw.println((r+1)+" "+(c));
+                pw.println((r+1)+" "+(c+1));
+            }
+            if(r==n&&c==1){
+                pw.println((r-1)+" "+(c));
+                pw.println((r-1)+" "+(c+1));
+                pw.println((r)+" "+(c+1));
+            }
+            if(r==n&&c==n){
+                pw.println((r-1)+" "+(c-1));
+                pw.println((r-1)+" "+(c));
+                pw.println((r)+" "+(c-1));
+            }
+            if(r==1&&c==n){
+                pw.println((r)+" "+(c-1));
+                pw.println((r+1)+" "+(c-1));
+                pw.println((r+1)+" "+(c));
+            }
+        }   
+        if(possible==5){
+            if(r==1){
+                pw.println((r)+" "+(c-1));
+                pw.println((r)+" "+(c+1));
+                pw.println((r+1)+" "+(c-1));
+                pw.println((r+1)+" "+(c));
+                pw.println((r+1)+" "+(c+1));
+            }
+            if(r==n){
+                pw.println((r-1)+" "+(c-1));
+                pw.println((r-1)+" "+(c));
+                pw.println((r-1)+" "+(c+1));
+                pw.println((r)+" "+(c-1));
+                pw.println((r)+" "+(c+1)); 
+            }
+            if(c==1){
+                pw.println((r-1)+" "+(c));
+                pw.println((r-1)+" "+(c+1));
+                pw.println((r)+" "+(c+1));
+                pw.println((r+1)+" "+(c));
+                pw.println((r+1)+" "+(c+1));
+            }
+            if(c==n){
+                pw.println((r-1)+" "+(c-1));
+                pw.println((r-1)+" "+(c));
+                pw.println((r)+" "+(c-1));
+                pw.println((r+1)+" "+(c-1));
+                pw.println((r+1)+" "+(c));
+            }
+        }
+        if(possible==8){
+            pw.println((r-1)+" "+(c-1));
+            pw.println((r-1)+" "+(c));
+            pw.println((r-1)+" "+(c+1));
+            pw.println((r)+" "+(c-1));
+            pw.println((r)+" "+(c+1));
+            pw.println((r+1)+" "+(c-1));
+            pw.println((r+1)+" "+(c));
+            pw.println((r+1)+" "+(c+1));
+        }
+        pw.flush();
+        pw.close();
+    }
+}
+
+
+
+
+
+
+
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+public class a7 {
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        int m=Integer.parseInt(st.nextToken());
+        int k=Integer.parseInt(st.nextToken());
+        int[] X=new int[k];
+        int[] Y=new int[k];
+        boolean[][] board=new boolean[n+1][m+1];
+        for (int i=0;i<k;i++) {
+            st=new StringTokenizer(br.readLine());
+            int x=Integer.parseInt(st.nextToken());
+            int y=Integer.parseInt(st.nextToken());
+            X[i]=x;
+            Y[i]=y;
+            board[x][y]=true;
+        }
+        int[] a={-2,-1,1,2,2,1,-1,-2};
+        int[] b={1,2,2,1,-1,-2,-2,-1};
+        for(int i=0;i<k;i++){
+            int x=X[i];
+            int y=Y[i];
+            for(int d=0;d<8;d++){
+                int u=x+a[d];
+                int v=y+b[d];
+                if(u>=1&&u<=n&&v>=1&&v<=m){
+                    if(board[u][v]){
+                        pw.println("YES");
+                        pw.flush();
+                        pw.close();
+                        return;
+                    }
+                }
+            }
+        }
+        pw.println("NO");
+        pw.flush();
+        pw.close();
+    }
+}
+
+
+
+
+
+
+
+
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+public class a8 {
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        int q=Integer.parseInt(st.nextToken());
+        ArrayList<Integer>[] a=new ArrayList[n+1];
+        for(int i=1;i<=n;i++){
+            a[i]=new ArrayList<>();
+        }
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=n;j++){
+                if(i!=j&&gcd(i,j)==1){
+                    a[i].add(j);
+                }
+            }
+        }
+        for(int i=0;i<q;i++){
+            st=new StringTokenizer(br.readLine());
+            int x=Integer.parseInt(st.nextToken());
+            int k=Integer.parseInt(st.nextToken());
+            if(a[x].size()<k){
+                pw.println("-1");
+            }
+            else{
+                pw.println(a[x].get(k-1));
+            }
+        }
+        pw.flush();
+        pw.close();
+    }
+    public static int gcd(int a,int b){
+        while(b!=0){
+            int k=a%b;
+            a=b;
+            b=k;
+        }
+        return a;
+    }
+}
 
