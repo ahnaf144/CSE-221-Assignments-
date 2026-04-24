@@ -1,1 +1,416 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+public class k1 {
+    public static long y=0;
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        st=new StringTokenizer(br.readLine());
+        long[] a=new long[n];
+        for(int i=0;i<n;i++){
+            a[i]=Long.parseLong(st.nextToken());
+        }
+        mergesort(a,0,n-1);
+        pw.println(y);
+        for(int i=0;i<n;i++){
+            pw.print(a[i]+" ");
+        }
+        pw.flush();
+        pw.close();
+    }
+    public static void mergesort(long[] a,int l,int r){
+        if(l<r){
+            int m=l+(r-l)/2;
+            mergesort(a, l, m);
+            mergesort(a, m+1, r);
+            merge(a,l,m,r);
+        }
+    }
+    public static void merge(long[] a,int l,int m,int r){
+        int n1=m-l+1;
+        int n2=r-m;
+        long[] L=new long[n1];
+        long[] R=new long[n2];
+        for(int i=0;i<n1;i++){
+            L[i]=a[i+l];
+        }
+        for(int i=0;i<n2;i++){
+            R[i]=a[m+1+i];
+        }
+        int i=0,j=0,k=l;
+        while(i<n1&&j<n2){
+            if(L[i]<=R[j]){
+                a[k++]=L[i++];
+            }
+            else{
+                a[k++]=R[j];
+                y+=n1-i;
+                j++;
+            }
+        }
+        while(i<n1){
+            a[k++]=L[i++];
+        }
+        while(j<n2){
+            a[k++]=R[j++];
+        }
+    }
+}
+
+
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+public class b {
+    public static long y=0;
+    public static void main(String[] args) throws Exception {
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        st=new StringTokenizer(br.readLine());
+        long[] a=new long[n];
+        for(int i=0;i<n;i++){
+            a[i]=Long.parseLong(st.nextToken());
+        }
+        mergesort(a,0,n-1);
+        pw.println(y);
+        pw.flush();
+        pw.close();
+    }
+    public static void mergesort(long[] a,int l,int r){
+        if(l<r){
+            int m=l+(r-l)/2;
+            mergesort(a, l, m);
+            mergesort(a, m+1, r);
+            merge(a,l,r,m);
+        }
+    }
+    public static int find(long[] a, int l, int r, long val) {
+        int ans=-1;
+        while (l<=r) {
+            int m=l+(r-l)/2;
+            if ((long)a[m]>val){
+                ans = m;
+                r=m-1;
+            }
+            else{
+                l=m+1;
+            }
+        }
+        return ans;
+    }
+    public static void merge(long[] a,int l,int r,int m){
+        int n1=m-l+1;
+        int n2=r-m;
+        long[] L=new long[n1];
+        long[] R=new long[n2];
+        for(int i=0;i<n1;i++){
+            L[i]=a[l+i];
+        }
+        for(int i=0;i<n2;i++){
+            R[i]=a[m+1+i];
+        }
+        for (int j=m+1;j<=r;j++) {
+            long val=a[j]*a[j];
+            int idx= find(a, l, m, val);
+            if (idx!=-1) {
+                y+=(m-idx+1);
+            }
+        }
+        int i=0,j=0,q=l;
+        while(i<n1&&j<n2){
+            if(L[i]<=R[j]){
+                a[q++]=L[i++];
+            }
+            else{
+                a[q++]=R[j++];
+            }
+        }
+        while(i<n1){
+            a[q++]=L[i++];
+        }
+        while(j<n2){
+            a[q++]=R[j++];
+        }
+    }
+}
+
+
+
+
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+public class c {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        long a=Long.parseLong(st.nextToken());
+        long b=Long.parseLong(st.nextToken());
+        int c=107;
+        long r=1;
+        while(b>0){
+            if(b%2!=0){
+                r=(r*a)%c;
+            }
+            a=(a*a)%c;
+            b/=2;
+        }
+        pw.println(r);
+        pw.flush();
+        pw.close();
+    }
+}
+
+
+
+
+
+
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+import java.io.InputStreamReader;
+public class d {
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int t=Integer.parseInt(st.nextToken());
+        long m=(long)Math.pow(10, 9)+7;
+        while(t-->0){
+            st=new StringTokenizer(br.readLine());
+            long[] a=new long[4];
+            for(int i=0;i<4;i++){
+                a[i]=Long.parseLong(st.nextToken());
+            }
+            st=new StringTokenizer(br.readLine());
+            long x=Long.parseLong(st.nextToken());
+            long[] r={1,0,0,1};
+            while(x>0){
+                if(x%2!=0){
+                    r=multiply(r,a,m);
+                }
+                a=multiply(a,a,m);
+                x/=2;
+            }
+            for(int i=0;i<2;i++){
+                pw.print(r[i]+" ");
+            }
+            pw.println();
+            for(int i=2;i<4;i++){
+                pw.print(r[i]+" ");
+            }
+            pw.println();
+        }
+        pw.flush();
+        pw.close();
+    }
+    public static long[] multiply(long[] r,long[] a,long m){
+        long[] t=new long[4];
+        for(int i=0;i<4;i++){
+            t[i]=r[i];
+        }
+        t[0]=((r[0]*a[0])+(r[1]*a[2]))%m;
+        t[1]=((r[0]*a[1])+(r[1]*a[3]))%m;
+        t[2]=((r[2]*a[0])+(r[3]*a[2]))%m;
+        t[3]=((r[2]*a[1])+(r[3]*a[3]))%m;
+        return t;
+    }
+}
+
+
+
+
+
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+import java.io.PrintWriter;
+public class e {
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int t=Integer.parseInt(st.nextToken());
+        while(t-->0){
+            st=new StringTokenizer(br.readLine());
+            long a=Long.parseLong(st.nextToken());
+            long n=Long.parseLong(st.nextToken());
+            long m=Long.parseLong(st.nextToken());
+            long[] arr={a,a,0,1};
+            long[] r={1,0,0,1};
+            while(n!=0){
+                if(n%2!=0){
+                    r=multiply(r,arr,m);
+                }
+                arr=multiply(arr,arr,m); 
+                n/=2;
+            }
+            pw.println(r[1]);
+        }
+        pw.flush();
+        pw.close();
+    }
+    public static long[] multiply(long[] r,long[] a,long m){
+        long[] t=new long[4];
+        t[0]=(r[0]*a[0]+r[1]*a[2])%m;
+        t[1]=(r[0]*a[1]+r[1]*a[3])%m;
+        t[2]=(r[2]*a[0]+r[3]*a[2])%m;
+        t[3]=(r[2]*a[1]+r[3]*a[3])%m;
+        return t;
+    }
+}
+
+
+
+
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+import java.io.PrintWriter;
+public class f {
+    public static int k=0;
+    public static void main(String[] args) throws Exception {
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        long[] a=new long[n];
+        st=new StringTokenizer(br.readLine());
+        for(int i=0;i<n;i++){
+            a[i]=Long.parseLong(st.nextToken());
+        }
+        long[] x=new long[n];
+        build(a,x,0,n-1);
+        for(int i=0;i<n;i++){
+            pw.print(x[i]+" ");
+        }
+        pw.flush();
+        pw.close();
+    }
+    public static void build(long[] a,long[] x,int l,int r){
+        if(l<=r){
+            int m=l+(r-l)/2;
+            x[k++]=a[m];
+            build(a, x, l, m-1);
+            build(a, x, m+1, r);
+        }
+    }
+}
+
+
+
+
+import java.io.BufferedReader;
+import java.util.StringTokenizer;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+public class g {
+    public static long[] in;
+    public static long[] pr;
+    public static long[] po;
+    public static int prx=0,pox=0;
+    public static void main(String[] args) throws Exception {
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        in=new long[n];
+        pr=new long[n];
+        po=new long[n];
+        st=new StringTokenizer(br.readLine());
+        for(int i=0;i<n;i++){
+            in[i]=Long.parseLong(st.nextToken());
+        }
+        st=new StringTokenizer(br.readLine());
+        for(int i=0;i<n;i++){
+            pr[i]=Long.parseLong(st.nextToken());
+        }
+        build(0,n-1);
+        for(int i=0;i<n;i++){
+            pw.print(po[i]+" ");
+        }
+        pw.flush();
+        pw.close();
+    }
+    public static void build(int l,int r){
+        if(l<=r){
+            long root=pr[prx++];
+            int x=l;
+            while(x<=r&&in[x]!=root){
+                x++;
+            }
+            build(l, x-1);
+            build(x+1, r);
+            po[pox++]=root;
+        }
+    }
+}
+
+
+
+
+import java.io.BufferedReader;
+import java.util.StringTokenizer;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+public class h {
+    public static int[] in, po, pre;
+    public static int prx=0;
+    public static void main(String[] args) throws Exception {
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        in=new int[n];
+        po=new int[n];
+        pre=new int[n];
+        st=new StringTokenizer(br.readLine());
+        for(int i=0;i<n;i++){
+            in[i]=Integer.parseInt(st.nextToken());
+        }
+        st=new StringTokenizer(br.readLine());
+        for(int i=0;i<n;i++){
+            po[i]=Integer.parseInt(st.nextToken());
+        }
+        buildpre(0,n-1,0,n-1);
+        for(int i=0;i<n;i++){
+            pw.print(pre[i]+" ");
+        }
+        pw.println();
+        pw.flush();
+        pw.close();
+    }
+    public static void buildpre(int il,int ir,int pl,int pr){
+        if(il>ir){
+            return;
+        }
+        int root=po[pr];
+        pre[prx++]=root;
+        int x=il;
+        while(in[x]!=root){
+            x++;
+        }
+        int left=x-il;
+        buildpre(il,x-1,pl,pl+left-1);
+        buildpre(x+1,ir,pl+left,pr-1);
+    }
+}
 
