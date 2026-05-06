@@ -385,3 +385,161 @@ public class f {
     }
 }
 
+
+
+
+
+
+
+
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.LinkedList;
+public class g {
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        String A=st.nextToken();
+        String B=st.nextToken();
+        int[] visited=new int[n];
+        String[] word=new String[n];
+        ArrayList<Integer>[] a=new ArrayList[26];
+        for(int i=0;i<26;i++){
+            a[i]=new ArrayList<>();
+        }
+        for(int i=0;i<n;i++){
+            word[i]=br.readLine();
+            int u=word[i].charAt(0)-'A';
+            a[u].add(i);
+        }
+        Queue<Integer> q=new LinkedList<>();
+        for(int i=0;i<n;i++){
+            if(word[i].equals(A)){
+                q.add(i);
+                visited[i]=1;
+                break;
+            }
+        }
+        while(!q.isEmpty()){
+            int u=q.remove();
+            if(word[u].equals(B)){
+                pw.println("YES");
+                pw.flush();
+                pw.close();
+                return;
+            }
+            char last=word[u].charAt(word[u].length()-1);
+            int k=0;
+            for(int i=0;i<a[last-'A'].size();i++){
+                int x=a[last-'A'].get(i);
+                k=x;
+                if(visited[x]==0){
+                    visited[x]=1;
+                    q.add(x);
+                }
+            }
+            a[last-'A'].clear();
+        }
+        pw.println("NO");
+        pw.flush();
+        pw.close();
+    }
+}
+
+
+
+
+
+
+
+import java.io.*;
+import java.util.*;
+public class h {
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        String[] word=new String[n];
+        int[] visited=new int[26];
+        int[] indegree=new int[26];
+        for(int i=0;i<n;i++){
+            word[i]=br.readLine();
+            for(int j=0;j<word[i].length();j++){
+                visited[word[i].charAt(j)-'a']=1;
+            }
+        }
+        ArrayList<Integer>[] a=new ArrayList[26];
+        for(int i=0;i<26;i++){
+            a[i]=new ArrayList<>();
+        }
+        for(int i=0;i<n-1;i++){
+            String w1=word[i];
+            String w2=word[i+1];
+            int len=Math.min(w1.length(), w2.length());
+            boolean found=false;
+            for(int j=0;j<len;j++){
+                if(w1.charAt(j)!=w2.charAt(j)){
+                    int u=w1.charAt(j)-'a';
+                    int v=w2.charAt(j)-'a';
+                    a[u].add(v);
+                    indegree[v]++;
+                    found=true;
+                    break;
+                }
+            }
+            if(!found&&w1.length()>w2.length()){
+                pw.println("-1");
+                pw.flush();
+                pw.close();
+                return;
+            }
+        }
+        PriorityQueue<Integer> q=new PriorityQueue<>();
+        String res="";
+        for(int i=0;i<26;i++){
+            if(visited[i]==1&&indegree[i]==0){
+                q.add(i);
+            }
+        }
+        while(!q.isEmpty()){
+            int u=q.remove();
+            char c=(char)(u+'a');
+            res+=c;
+            for(int i=0;i<a[u].size();i++){
+                int v=a[u].get(i);
+                indegree[v]--;
+                if(indegree[v]==0){
+                    q.add(v);
+                }
+            }
+        }
+        int count=0;
+        for(int i=0;i<26;i++){
+            if(visited[i]==1){
+                count++;
+            }
+        }
+        if(count!=res.length()){
+            pw.println("-1");
+            pw.flush();
+            pw.close();
+            return;
+        }
+        else{
+            pw.println(res);
+        }
+        pw.flush();
+        pw.close();
+    }
+    
+}
+
+
