@@ -1,0 +1,437 @@
+import java.io.*;
+import java.util.*;
+public class AShortestPath {
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        int m=Integer.parseInt(st.nextToken());
+        int s=Integer.parseInt(st.nextToken());
+        int d=Integer.parseInt(st.nextToken());
+        ArrayList<int[]>[] g=new ArrayList[n+1];
+        for(int i=1;i<=n;i++){
+            g[i]=new ArrayList<>();
+        }
+        int[] dist=new int[n+1];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        int[] parent=new int[n+1];
+        Arrays.fill(parent, -1);
+        dist[s]=0;
+        int[] u=new int[m+1];
+        int[] v=new int[m+1];
+        int[] w=new int[m+1];
+        st=new StringTokenizer(br.readLine());
+        for(int i=1;i<=m;i++){
+            u[i]=Integer.parseInt(st.nextToken());
+        }
+        st=new StringTokenizer(br.readLine());
+        for(int i=1;i<=m;i++){
+            v[i]=Integer.parseInt(st.nextToken());
+        }
+        st=new StringTokenizer(br.readLine());
+        for(int i=1;i<=m;i++){
+            w[i]=Integer.parseInt(st.nextToken());
+        }
+        for(int i=1;i<=m;i++){
+            g[u[i]].add(new int[]{v[i],w[i]});
+        }
+        PriorityQueue<int[]> q=new PriorityQueue<>((a,b)->Integer.compare(a[1], b[1]));
+        q.add(new int[]{s,dist[s]});
+        while (!q.isEmpty()) {
+            int[] e=q.remove();
+            int node=e[0];
+            int dis=e[1];
+            if(dis>dist[node]){
+                continue;
+            }
+            for(int i=0;i<g[node].size();i++){
+                int[] curr=g[node].get(i);
+                int next=curr[0];
+                int weight=curr[1];
+                if(dis+weight<dist[next]){
+                    dist[next]=dis+weight;
+                    parent[next]=node;
+                    q.add(new int[]{next,dist[next]});
+                }
+            }
+        }
+        if(dist[d]!=Integer.MAX_VALUE){
+            pw.println(dist[d]);
+            int k=d;
+            Stack<Integer> sta=new Stack<>();
+            sta.push(k);
+            while(k!=s){
+                k=parent[k];
+                sta.push(k);
+            }
+            while(!sta.isEmpty()){
+                pw.print(sta.pop()+" ");
+            }
+        }
+        else{
+            pw.println("-1");
+        }
+        pw.flush();
+        pw.close();
+    }
+    
+}
+
+
+
+
+
+
+import java.io.*;
+import java.util.*;
+public class BWhereToMeet {
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        int m=Integer.parseInt(st.nextToken());
+        int s=Integer.parseInt(st.nextToken());
+        int t=Integer.parseInt(st.nextToken());
+        ArrayList<int[]>[] g=new ArrayList[n+1];
+        for(int i=1;i<=n;i++){
+            g[i]=new ArrayList<>();
+        }
+        for(int i=1;i<=m;i++){
+            st=new StringTokenizer(br.readLine());
+            int u=Integer.parseInt(st.nextToken());
+            int v=Integer.parseInt(st.nextToken());
+            int w=Integer.parseInt(st.nextToken());
+            g[u].add(new int[]{v,w});
+        }
+        int[] distA=new int[n+1];
+        int[] distB=new int[n+1];
+        Arrays.fill(distA, Integer.MAX_VALUE);
+        Arrays.fill(distB, Integer.MAX_VALUE);
+        dijkstra(g,distA,s);
+        dijkstra(g,distB,t);
+        int ans=Integer.MAX_VALUE;
+        int idx=0;
+        for(int i=1;i<=n;i++){
+            int time=Math.max(distA[i],distB[i]);
+            if(time<ans){
+                ans=time;
+                idx=i;
+            }
+        }
+        if(ans==Integer.MAX_VALUE){
+            pw.println("-1");
+        }
+        else{
+            pw.println(ans+" "+idx);
+        }
+        pw.flush();
+        pw.close();
+    }
+    public static void dijkstra(ArrayList<int[]>[] g,int[] dist,int s){
+        dist[s]=0;
+        PriorityQueue<int[]> q=new PriorityQueue<>((a,b)->Integer.compare(a[1], b[1]));
+        q.add(new int[]{s,dist[s]});
+        while (!q.isEmpty()) {
+            int[] e=q.remove();
+            int node=e[0];
+            int dis=e[1];
+            if(dis>dist[node]){
+                continue;
+            }
+            for(int i=0;i<g[node].size();i++){
+                int[] curr=g[node].get(i);
+                int next=curr[0];
+                int weight=curr[1];
+                if(dis+weight<dist[next]){
+                    dist[next]=dis+weight;
+                    q.add(new int[]{next,dist[next]});
+                }
+            }
+        }
+    }
+    
+}
+
+
+
+
+
+
+
+
+import java.io.*;
+import java.util.*;
+public class CMinimizeTheDanger {
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        int m=Integer.parseInt(st.nextToken());
+        ArrayList<int[]>[] g=new ArrayList[n+1];
+        for(int i=1;i<=n;i++){
+            g[i]=new ArrayList<>();
+        }
+        for(int i=0;i<m;i++){
+            st=new StringTokenizer(br.readLine());
+            int u=Integer.parseInt(st.nextToken());
+            int v=Integer.parseInt(st.nextToken());
+            int w=Integer.parseInt(st.nextToken());
+            g[u].add(new int[]{v,w});
+            g[v].add(new int[]{u,w});            
+        }
+        int[] dis=new int[n+1];
+        Arrays.fill(dis, Integer.MAX_VALUE);
+        dis[1]=0;
+        PriorityQueue<int[]> q=new PriorityQueue<>((a,b)->Integer.compare(a[1], b[1]));
+        q.add(new int[]{1,dis[1]});
+        while (!q.isEmpty()) {
+            int[] e=q.remove();
+            int node=e[0];
+            int dist=e[1];
+            if(dist>dis[node]){
+                continue;
+            }
+            for(int i=0;i<g[node].size();i++){
+                int[] curr=g[node].get(i);
+                int next=curr[0];
+                int weight=curr[1];
+                if(Math.max(dist, weight)<dis[next]){
+                    dis[next]=Math.max(dist, weight);
+                    q.add(new int[]{next,dis[next]});
+                }
+            }
+        }
+        for(int i=1;i<=n;i++){
+            if(dis[i]!=Integer.MAX_VALUE){
+                pw.print(dis[i]+" ");
+            }
+            else{
+                pw.print("-1"+" ");
+            }
+        }
+        pw.println();
+        
+        pw.flush();
+        pw.close();
+    }
+}
+
+
+
+
+
+
+
+import java.io.*;
+import java.util.*;
+public class DBeautifulPath {
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        int m=Integer.parseInt(st.nextToken());
+        int s=Integer.parseInt(st.nextToken());
+        int d=Integer.parseInt(st.nextToken());
+        int[] w=new int[n+1];
+        st=new StringTokenizer(br.readLine());
+        for(int i=1;i<=n;i++){
+            w[i]=Integer.parseInt(st.nextToken());
+        }
+        ArrayList<Integer> []g =new ArrayList[n+1];
+        for(int i=1;i<=n;i++){
+            g[i]=new ArrayList<>();
+        }
+        for(int i=0;i<m;i++){
+            st=new StringTokenizer(br.readLine());
+            int u=Integer.parseInt(st.nextToken());
+            int v=Integer.parseInt(st.nextToken());
+            g[u].add(v);
+        }
+        int[] dis=new int[n+1];
+        Arrays.fill(dis, Integer.MAX_VALUE);
+        dis[s]=w[s];
+        PriorityQueue<int[]> q=new PriorityQueue<>((a,b)->Integer.compare(a[1], b[1]));
+        q.add(new int[]{s,dis[s]});
+        while (!q.isEmpty()) {
+            int[] e=q.remove();
+            int node=e[0];
+            int dist=e[1];
+            if(dist>dis[node]){
+                continue;
+            }
+            for(int i=0;i<g[node].size();i++){
+                int next=g[node].get(i);
+                int weight=w[next];
+                if(dist+weight<dis[next]){
+                    dis[next]=dist+weight;
+                    q.add(new int[]{next,dis[next]});
+                }
+            }
+        }
+        if(dis[d]!=Integer.MAX_VALUE){
+            pw.println(dis[d]);
+        }
+        else{
+            pw.println("-1");
+        }
+        pw.flush();
+        pw.close();
+    }
+    
+}
+
+
+
+
+
+
+
+import java.io.*;
+import java.util.*;
+public class EParityEdges {
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        int m=Integer.parseInt(st.nextToken());
+        int[] u=new int[m+1];
+        int[] v=new int[m+1];
+        int[] w=new int[m+1];
+        st=new StringTokenizer(br.readLine());
+        for(int i=1;i<=m;i++){
+            u[i]=Integer.parseInt(st.nextToken());
+        }
+        st=new StringTokenizer(br.readLine());
+        for(int i=1;i<=m;i++){
+            v[i]=Integer.parseInt(st.nextToken());
+        }
+        st=new StringTokenizer(br.readLine());
+        for(int i=1;i<=m;i++){
+            w[i]=Integer.parseInt(st.nextToken());
+        }
+        ArrayList<int[]>[] g=new ArrayList[n+1];
+        for(int i=1;i<=n;i++){
+            g[i]=new ArrayList<>();
+        }
+        for(int i=1;i<=m;i++){
+            g[u[i]].add(new int[]{v[i],w[i]});
+        }
+        int[][] dis=new int[n+1][2];
+        for(int i=1;i<=n;i++){
+            Arrays.fill(dis[i], Integer.MAX_VALUE);
+        }
+        dis[1][0]=0;
+        dis[1][1]=0;
+        PriorityQueue<int[]> q=new PriorityQueue<>((a,b)->Integer.compare(a[1], b[1]));
+        q.add(new int[]{1,0,0});
+        q.add(new int[]{1,0,1});
+        while (!q.isEmpty()) {
+            int[] e=q.remove();
+            int node=e[0];
+            int dist=e[1];
+            int prevParity=e[2];
+            if(dist>dis[node][prevParity]){
+                continue;
+            }
+            for(int i=0;i<g[node].size();i++){
+                int[] curr=g[node].get(i);
+                int next=curr[0];
+                int weight=curr[1];
+                int parity=weight%2;
+                if(parity==prevParity){
+                    continue;
+                }
+                if(dist+weight<dis[next][parity]){
+                    dis[next][parity]=dist+weight;
+                    q.add(new int[]{next,dis[next][parity],parity});
+                }
+            }
+        }
+        if(Math.min(dis[n][0], dis[n][1])!=Integer.MAX_VALUE){
+            pw.println(Math.min(dis[n][0], dis[n][1]));
+        }
+        else{
+            pw.println("-1");
+        }
+        pw.flush();
+        pw.close();
+    }
+    
+}
+
+
+
+
+
+
+
+import java.io.*;
+import java.util.*;
+public class FShortestPathRevisited {
+    public static void main(String[] args) throws Exception{
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        PrintWriter pw=new PrintWriter(System.out);
+        int n=Integer.parseInt(st.nextToken());
+        int m=Integer.parseInt(st.nextToken());
+        int s=Integer.parseInt(st.nextToken());
+        int d=Integer.parseInt(st.nextToken());
+        ArrayList<int[]>[] g=new ArrayList[n+1];
+        for(int i=1;i<=n;i++){
+            g[i]=new ArrayList<>();
+        }
+        for(int i=0;i<m;i++){
+            st=new StringTokenizer(br.readLine());
+            int u=Integer.parseInt(st.nextToken());
+            int v=Integer.parseInt(st.nextToken());
+            int w=Integer.parseInt(st.nextToken());
+            g[u].add(new int[]{v,w});
+            g[v].add(new int[]{u,w});
+        }
+        int[] dis1=new int[n+1];
+        int[] dis2=new int[n+1];
+        Arrays.fill(dis1, Integer.MAX_VALUE);
+        Arrays.fill(dis2, Integer.MAX_VALUE);
+        dis1[s]=0;
+        PriorityQueue<int[]> q=new PriorityQueue<>((a,b)->Integer.compare(a[1], b[1]));
+        q.add(new int[]{s,dis1[s]});
+        while (!q.isEmpty()) {
+            int[] e=q.remove();
+            int node=e[0];
+            int dist=e[1];
+            if(dist>dis2[node]){
+                continue;
+            }
+            for(int i=0;i<g[node].size();i++){
+                int[] curr=g[node].get(i);
+                int next=curr[0];
+                int weight=curr[1];
+                if(dist+weight<dis1[next]){
+                    dis2[next]=dis1[next];
+                    dis1[next]=dist+weight;
+                    q.add(new int[]{next,dis1[next]});
+                }
+                else if((dist+weight<dis2[next])&&(dist+weight>dis1[next])){
+                    dis2[next]=dist+weight;
+                    q.add(new int[]{next,dis2[next]});
+                }
+            }
+        }
+        if(dis2[d]!=Integer.MAX_VALUE){
+            pw.println(dis2[d]);
+        }
+        else{
+            pw.println("-1");
+        }
+        pw.flush();
+        pw.close();
+    }
+    
+}
+
+
