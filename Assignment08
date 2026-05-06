@@ -405,13 +405,24 @@ public class GTasksAndDeadlines {
         StringTokenizer st=new StringTokenizer(br.readLine());
         PrintWriter pw=new PrintWriter(System.out);
         int n=Integer.parseInt(st.nextToken());
+        PriorityQueue<int[]> q=new PriorityQueue<>((a,b)->Integer.compare(a[0],b[0]));
         for(int i=1;i<=n;i++){
             st=new StringTokenizer(br.readLine());
-            
+            int a=Integer.parseInt(st.nextToken());
+            int b=Integer.parseInt(st.nextToken());
+            q.add(new int[]{a,b});
         }
-        
+        long j=0;
+        long r=0;
+        while(!q.isEmpty()){
+            int[] e=q.remove();
+            int f=e[0];
+            int d=e[1];
+            j+=f;
+            r+=d-j;
+        }
+        pw.println(r);
         pw.flush();
         pw.close();
     }
-    
 }
