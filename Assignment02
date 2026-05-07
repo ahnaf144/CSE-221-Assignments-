@@ -422,10 +422,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-public class Search {
+public class b8 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(System.out));
+        PrintWriter out = new PrintWriter(System.out);
         int T = Integer.parseInt(br.readLine());
         for (int i = 0; i < T; i++) {
             String[] parts = br.readLine().split(" ");
@@ -444,8 +444,9 @@ public class Search {
                     low = mid + 1;
                 }
             }
-            out.write(answer + "\n");
+            pw.println(answer);
         }
-        out.flush();
+        pw.flush();
+        pw.close();
     }
 }
